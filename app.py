@@ -1,13 +1,19 @@
 import streamlit as st
-import sqlite3
 import pandas as pd
 from datetime import datetime, timedelta
+import mysql.connector
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="yourpassword",
+    database="telecom_db"
+)
+cursor = conn.cursor()
 
 # ---------------------------
 # Database setup
 # ---------------------------
-conn = sqlite3.connect("telecom.db", check_same_thread=False)
-cursor = conn.cursor()
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS users (
@@ -236,3 +242,4 @@ elif st.session_state.page == "Dashboard":
             st.sidebar.download_button("My Purchases (CSV)", purchases.to_csv(index=False), "my_purchases.csv")
     else:
         st.warning("⚠️ Please login first.")
+
